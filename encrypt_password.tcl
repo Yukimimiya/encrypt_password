@@ -32,12 +32,12 @@ namespace eval ::EncryptPassword {
     }
     proc EncryptPassword {plain_password} {
         set uuid [getUUID]
-        set encrypted_password [exec echo $plain_password | openssl enc -e -des -base64 -k $uuid]
+        set encrypted_password [exec echo $plain_password | openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 1000000 -base64 -k $uuid]
         return $encrypted_password        
     }
     proc DecryptPassword {encrypt_password} {
         set uuid [getUUID]
-        set decrypted_password [exec echo $encrypt_password | openssl enc -d -des -base64 -k $uuid]
+        set decrypted_password [exec echo $encrypt_password | openssl enc -d -aes-256-cbc -md sha512 -pbkdf2 -iter 1000000 -base64 -k $uuid]
         return $decrypted_password
     }
 }
